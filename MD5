@@ -1,0 +1,14 @@
+3630a3f6a4c048340a0b69d485fa0ee8 *DESCRIPTION
+a9425ca9a168131441193fa1d204ea15 *NAMESPACE
+dfafffe9de021d8f4b19fa5f41a7277a *R/BSSS.R
+55bb50f4fc450cc62c1cb0fb5d62ca76 *R/d_score.R
+715244e6b38b1630cd639155b2812dfb *R/gen_matern_gaussian_rf.R
+63caaade657fa91863d7d384392ab68f *build/vignette.rds
+d41539daa3e84bb92fb5f3682a334f7b *inst/doc/my_vignette.R
+f86bad212ef5c49df04228610d4ff066 *inst/doc/my_vignette.Rmd
+8284224d37edc7a4461e341d738ee221 *inst/doc/my_vignette.html
+adfbaaf55d917e97d82be05e1229b293 *man/BSSS.Rd
+b61b639d59eb17b4c8b23e036ffd58ca *man/d_score.Rd
+ed909bc3f6daeaabbccf02ad7a266ee2 *man/gen_matern_gaussian_rf.Rd
+f86bad212ef5c49df04228610d4ff066 *vignettes/my_vignette.Rmd
+d4e388643b7718f087b1c43b042cbab9 *vignettes/reference.bib

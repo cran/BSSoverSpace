@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Sixing Hao" />
+
+
+<title>Introduction to BSSoverSpace</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to BSSoverSpace</h1>
+<h4 class="author">Sixing Hao</h4>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BSSoverSpace)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">16</span>)</span></code></pre></div>
+<div id="blind-source-separation-over-space" class="section level1">
+<h1>Blind Source Separation Over Space</h1>
+<p>Blind Source Separation Over Space (BSSS) is a tool for analyzing
+spatial multivariate data. Blind Source Separation method assumes that
+observed variables are formed by linear combination of underlying
+independent latent variables, which cannot be observed directly. The
+goal is to estimate the latent variables, which also includes estimating
+the mixing matrix. This package <code>BSSoverSpace</code> is an
+implementation of the work <span class="citation">Zhang, Hao, and Yao
+(2022)</span>. This manual provides introduction and simple instructions
+on how to use the functions within.</p>
+</div>
+<div id="the-main-function-bsss" class="section level1">
+<h1>The main function <code>BSSS</code></h1>
+<p>In this package <code>BSSoverSpace</code>, the main function is
+<code>BSSS</code>. It implemented the method in <span class="citation">Zhang, Hao, and Yao (2022)</span> for estimating the
+latent field <span class="math inline">\(Z(s)\)</span>, and the unmixing
+matrix. This function takes 5 inputs: <code>x</code> is the data matrix
+of observed random field <span class="math inline">\(X(s)\)</span>.
+<code>coord</code> is the coordinate of observed random field <span class="math inline">\(X(s)\)</span>. <code>kernel_type</code> and
+<code>kernel_parameter</code> are the specifications of kernels for us
+to select. For each <code>kernel_type</code>, specification of
+<code>kernel_parameter</code> slightly differs. If
+<code>kernel_type</code> equals <code>&#39;ring&#39;</code>, there must be an
+even number of parameters in <code>kernel_parameter</code>. Check
+<code>spatial_kernel_matrix</code> from package <code>SpatialBSS</code>
+for more details.</p>
+<p>Here, we generate a random field and use it to demonstrate the usage
+of this function. First we generate 500 2-dimensional coordinates:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sample_size <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">runif</span>(sample_size <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">50</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(coords) <span class="ot">&lt;-</span> <span class="fu">c</span>(sample_size, <span class="dv">2</span>)</span></code></pre></div>
+<p>Next, we generate a 5-variate latent gaussian random field <span class="math inline">\(Z(s)\)</span> with matern covariance function in
+the following way:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&#39;BSSoverSpace&#39;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dim <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="co"># specify the dimensionality of random variable</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>nu <span class="ot">&lt;-</span> <span class="fu">runif</span>(dim, <span class="dv">0</span>, <span class="dv">6</span>) <span class="co"># parameter for matern covariance function</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>kappa <span class="ot">&lt;-</span> <span class="fu">runif</span>(dim, <span class="dv">0</span>, <span class="dv">2</span>) <span class="co"># parameter for matern covariance function</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>zs <span class="ot">&lt;-</span> <span class="fu">gen_matern_gaussian_rf</span>(<span class="at">coords=</span>coords, <span class="at">dim=</span>dim, <span class="at">nu=</span>nu, <span class="at">kappa=</span>kappa)</span></code></pre></div>
+<p>Then, we create a mixing matrix <span class="math inline">\(\Omega\)</span> , and mix our latent field to get
+the observed random field <span class="math inline">\(X(s)\)</span>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mix_mat <span class="ot">&lt;-</span> <span class="fu">diag</span>(dim) <span class="co"># create a diagonal matrix as the mixing matrix</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>xs <span class="ot">&lt;-</span> <span class="fu">t</span>(mix_mat <span class="sc">%*%</span> <span class="fu">t</span>(zs))</span></code></pre></div>
+<p>Now the observed random field <span class="math inline">\(X(s)\)</span> is created, and we need to choose
+kernels. Here we choose 3 ring kernels, with parameters <span class="math inline">\((0, 0.5)\)</span>, <span class="math inline">\((0.5, 1)\)</span> and <span class="math inline">\((1, 8)\)</span>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>example<span class="ot">&lt;-</span><span class="fu">BSSS</span>(xs, <span class="at">coord =</span> coords, <span class="at">kernel_type =</span> <span class="st">&#39;ring&#39;</span>, <span class="at">kernel_parameter =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">8</span>))</span></code></pre></div>
+<p>The function <code>BSSS</code> returns both the estimated mixing
+matrix <span class="math inline">\(\hat{\Omega}\)</span>
+<code>mix_mat_est</code> and the estimated latent field <span class="math inline">\(\widehat{Z(s)}\)</span>. To see how good <span class="math inline">\(\hat{\Omega}\)</span> is, we can use function
+<code>d_score</code>, which gives a numeric value between 0 and 1, with
+0 meaning that the estimator is a column permutation of true value:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">d_score</span>(example<span class="sc">$</span>mix_mat_est, mix_mat)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.123749</span></span></code></pre></div>
+<p>We can further explore the validity of our estimation, by looking at
+the eigenvalues of <span class="math inline">\(\hat{W}\)</span>. Larger
+gap between first few eigenvalues would strengthen the validity of our
+estimation. One can see the details of <span class="math inline">\(\hat{W}\)</span> in <span class="citation">Zhang,
+Hao, and Yao (2022)</span>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(example<span class="sc">$</span>w_eigenvalue)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div id="references" class="section level2 unnumbered">
+<h2 class="unnumbered">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-zhang_blind_2022" class="csl-entry">
+Zhang, Bo, Sixing Hao, and Qiwei Yao. 2022. <span>“Blind
+<span>Source</span> <span>Separation</span> over
+<span>Space</span>.”</span> arXiv. <a href="https://arxiv.org/abs/2201.02023">https://arxiv.org/abs/2201.02023</a>.
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
